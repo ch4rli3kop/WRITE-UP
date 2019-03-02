@@ -1,0 +1,66 @@
+Dump of assembler code for function main:
+   0x0000000000400596 <+0>:   55 push   rbp
+   0x0000000000400597 <+1>:   48 89 e5 mov    rbp,rsp
+   0x000000000040059a <+4>:   48 83 ec 40 sub    rsp,0x40
+   0x000000000040059e <+8>:   64 48 8b 04 25 28 00 00 00 mov    rax,QWORD PTR fs:0x28
+   0x00000000004005a7 <+17>:  48 89 45 f8 mov    QWORD PTR [rbp-0x8],rax
+   0x00000000004005ab <+21>:  31 c0 xor    eax,eax
+   0x00000000004005ad <+23>:  48 c7 45 c0 00 00 00 00 mov    QWORD PTR [rbp-0x40],0x0
+   0x00000000004005b5 <+31>:  48 c7 45 c8 00 00 00 00 mov    QWORD PTR [rbp-0x38],0x0
+   0x00000000004005bd <+39>:  48 c7 45 d0 00 00 00 00 mov    QWORD PTR [rbp-0x30],0x0
+   0x00000000004005c5 <+47>:  48 c7 45 d8 00 00 00 00 mov    QWORD PTR [rbp-0x28],0x0
+   0x00000000004005cd <+55>:  48 c7 45 e0 00 00 00 00 mov    QWORD PTR [rbp-0x20],0x0
+   0x00000000004005d5 <+63>:  48 c7 45 e8 00 00 00 00 mov    QWORD PTR [rbp-0x18],0x0
+   0x00000000004005dd <+71>:  b9 60 10 60 00 mov    ecx,0x601060 <str3>
+   0x00000000004005e2 <+76>:  ba 50 10 60 00 mov    edx,0x601050 <str2>
+   0x00000000004005e7 <+81>:  be 40 10 60 00 mov    esi,0x601040 <str1>
+   0x00000000004005ec <+86>:  bf a4 06 40 00 mov    edi,0x4006a4
+   0x00000000004005f1 <+91>:  b8 00 00 00 00 mov    eax,0x0
+   0x00000000004005f6 <+96>:  e8 75 fe ff ff call   0x400470 <printf@plt>
+   0x00000000004005fb <+101>: b8 00 00 00 00 mov    eax,0x0
+   0x0000000000400600 <+106>: 48 8b 55 f8 mov    rdx,QWORD PTR [rbp-0x8]
+   0x0000000000400604 <+110>: 64 48 33 14 25 28 00 00 00 xor    rdx,QWORD PTR fs:0x28
+   0x000000000040060d <+119>: 74 05 je     0x400614 <main+126>
+   0x000000000040060f <+121>: e8 4c fe ff ff call   0x400460 <__stack_chk_fail@plt>
+   0x0000000000400614 <+126>: c9 leave  
+   0x0000000000400615 <+127>: c3 ret    
+End of assembler dump.
+
+
+Dump of assembler code for function str1:
+   0x0000000000601040 <+0>:   4b rex.WXB
+   0x0000000000601041 <+1>:   43 54 rex.XB push r12
+   0x0000000000601043 <+3>:   46 00 00 rex.RX add BYTE PTR [rax],r8b
+   0x0000000000601046 <+6>:   00 00 add    BYTE PTR [rax],al
+   0x0000000000601048 <+8>:   00 00 add    BYTE PTR [rax],al
+   0x000000000060104a <+10>:  00 00 add    BYTE PTR [rax],al
+   0x000000000060104c <+12>:  00 00 add    BYTE PTR [rax],al
+   0x000000000060104e <+14>:  00 00 add    BYTE PTR [rax],al
+End of assembler dump.
+
+
+Dump of assembler code for function str2:
+   0x0000000000601050 <+0>:   7b 56 jnp    0x6010a8
+   0x0000000000601052 <+2>:   33 52 79 xor    edx,DWORD PTR [rdx+0x79]
+   0x0000000000601055 <+5>:   5f pop    rdi
+   0x0000000000601056 <+6>:   76 33 jbe    0x60108b
+   0x0000000000601058 <+8>:   52 push   rdx
+   0x0000000000601059 <+9>:   00 00 add    BYTE PTR [rax],al
+   0x000000000060105b <+11>:  00 00 add    BYTE PTR [rax],al
+   0x000000000060105d <+13>:  00 00 add    BYTE PTR [rax],al
+   0x000000000060105f <+15>:  00 59 5f add    BYTE PTR [rcx+0x5f],bl
+End of assembler dump.
+
+
+Dump of assembler code for function str3:
+   0x0000000000601060 <+0>:   59 pop    rcx
+   0x0000000000601061 <+1>:   5f pop    rdi
+   0x0000000000601062 <+2>:   53 push   rbx
+   0x0000000000601063 <+3>:   31 33 xor    DWORD PTR [rbx],esi
+   0x0000000000601065 <+5>:   33 70 79 xor    esi,DWORD PTR [rax+0x79]
+   0x0000000000601068 <+8>:   2e 2e 2e 7d 00 cs cs cs jge 0x60106d <str3+13>
+   0x000000000060106d <+13>:  00 00 add    BYTE PTR [rax],al
+   0x000000000060106f <+15>:  00 00 add    BYTE PTR [rax],al
+End of assembler dump.
+
+

@@ -1,0 +1,4 @@
+watch size
+watch author
+watch ptr
+break * 0x00400D10

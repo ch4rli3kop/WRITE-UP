@@ -1,0 +1,3 @@
+break * 0x000000400D2C
+break * 0x0000400D8c
+break * 0x000400DD2
