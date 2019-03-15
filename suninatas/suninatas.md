@@ -66,7 +66,7 @@ Hint를 보아하니 id와 passwd를 같게 한 뒤, document.web02.submit() 동
 
 먼저 브포를 걸어 request 전에 값을 수정할 수 있도록 한다.
 
-![slevel2](.\suninatas_image\slevel2.JPG)
+![slevel2](./suninatas_image/slevel2.JPG)
 
 브포가 제대로 걸렸으면 대충 아무거나 입력하는데, document.web02.submit()가 실행되야 하므로 반드시 id != pw 한 값으로 입력한다.
 
