@@ -70,11 +70,11 @@ Hint를 보아하니 id와 passwd를 같게 한 뒤, document.web02.submit() 동
 
 브포가 제대로 걸렸으면 대충 아무거나 입력하는데, document.web02.submit()가 실행되야 하므로 반드시 id != pw 한 값으로 입력한다.
 
-![slevel2-1](.\suninatas_image\slevel2-1.JPG)
+![slevel2-1](./suninatas_image/slevel2-1.JPG)
 
 이후 Join을 클릭하면, document.web02.submit()가 실행되면서 Fiddler에서 브포가 걸린 모습을 확인할 수 있을 것이다. 왼쪽 상단의 Go를 하던가 오른쪽 response란의 Run to Completion을 누르면 끝.
 
-![slevel2-2](.\suninatas_image\slevel2-2.JPG)
+![slevel2-2](./suninatas_image/slevel2-2.JPG)
 
 
 style.css가 없어서 오류가 뜨기는 하는데, 굳이 중요한 것은 아니니 넘겨도 된다.
@@ -88,23 +88,23 @@ style.css가 없어서 오류가 뜨기는 하는데, 굳이 중요한 것은 �
 
 ### #3 level3
 
-![slevel3](..\suninatas_image\slevel3.JPG)
+![slevel3](./suninatas_image/slevel3.JPG)
 
 ??? 하며, 이것저것 뒤져봤는데 별게 없었다. 게다가 Notice 게시판에는 글쓰기 기능이 없다. 글자만 말똥말똥 바라보면서 아니 뭐 하라는거지??하면서 답답할 때는 QnA를 보자. Solver를 보는 것보다 QnA에서 가끔 나오는 깨알같은 단서들을 참고하는게 더 나은 것 같다.
 
 
 
-![slevel3-1](..\suninatas_image\slevel3-1.JPG)
+![slevel3-1](./suninatas_image/slevel3-1.JPG)
 
 이런식으로 문제에 대한 힌트를 얻을 수 있다. 진짜로 Notice Board에 글을 쓸 수 있는 방법이 있는 것 같다. 고수 성님이 말씀하신대로 자유게시판(=QnA 게시판)의 동작을 참고해보며 Notice Board에 쓰는 방법을 찾아보도록 하자.
 
 우선, Q&N 게시판에 접속해보면,
 
-![slevel3-2](..\suninatas_image\slevel3-2.JPG)
+![slevel3-2](../suninatas_image/slevel3-2.JPG)
 
 처음 저 화면을 보여주기 위해서는 `/board/list.asp?divi=Free`를 요청한다.
 
-![slevel3-3](..\suninatas_image\slevel3-3.JPG)
+![slevel3-3](../suninatas_image/slevel3-3.JPG)
 
 
 
@@ -114,43 +114,43 @@ list.asp가 저렇게 표처럼 정리해주는 것 같다.
 
 이 후 `WRITE` 버튼을 누르면 다음과 같이 `/board/write.asp?page=1&divi=Free`를 요청하게 된다.
 
-![slevel3-4](..\suninatas_image\slevel3-4.JPG)
+![slevel3-4](../suninatas_image/slevel3-4.JPG)
 
 다음과 같이 뜸.
 
-![slevel3-5](..\suninatas_image\slevel3-5.JPG)
+![slevel3-5](../suninatas_image/slevel3-5.JPG)
 
 Board 내용을 대충 작성한 뒤, `SUBMIT`을 누르면 `/board/board_procc.asp`가 실행되면서 게시물이 등록되었다는 팝업 창이 뜨게 된다.
 
-![slevel3-6](..\suninatas_image\slevel3-6.JPG)
+![slevel3-6](../suninatas_image/slevel3-6.JPG)
 
-![slevel3-7](..\suninatas_image\slevel3-7.JPG)
+![slevel3-7](../suninatas_image/slevel3-7.JPG)
 
 게시물이 등록되었으면, 이제 다시 `/board/list.asp`를 이용하여 게시물들을 보여준다.
 
-![slevel3-8](..\suninatas_image\slevel3-8.JPG)
+![slevel3-8](../suninatas_image/slevel3-8.JPG)
 
-![slevel3-9](..\suninatas_image\slevel3-9.JPG)
+![slevel3-9](../suninatas_image/slevel3-9.JPG)
 
 아마 Notice 게시판도 위와 비슷하게 동작할 것 같다. Notice 게시판에 가보면 다음과 같이 `/board/list.asp?divi=notice`를 요청한다.
 
-![slevel3-10](..\suninatas_image\slevel3-10.JPG)
+![slevel3-10](../suninatas_image/slevel3-10.JPG)
 
-![slevel3-11](..\suninatas_image\slevel3-11.JPG)
+![slevel3-11](../suninatas_image/slevel3-11.JPG)
 
 Notice와 Q&A 게시판의 요청을 보면, divi 속성을 이용하여 두 게시판을 구별한다. 그렇다면 아까 Q&A 게시판을 write 할 때 요청한 url에서 divi만 notice로 바꾸면 Notice 게시판에도 글을 쓸 수 있지 않을까?
 
 그리하야 `/board/write.asp?page=1&divi=notice`를 시전해본다.
 
-![slevel3-12](..\suninatas_image\slevel3-12.JPG)
+![slevel3-12](../suninatas_image/slevel3-12.JPG)
 
 여윽시는 역시 여윽시였따.
 
-![slevel3-13](..\suninatas_image\slevel3-13.JPG)
+![slevel3-13](../suninatas_image/slevel3-13.JPG)
 
 글을 쓰면 팝업창으로 플래그가 뿅
 
-![slevel3-14](..\suninatas_image\slevel3-14.JPG)![slevel3-15](C:\Users\pch21\Documents\suninatas_image\slevel3-15.JPG)
+![slevel3-14](../suninatas_image/slevel3-14.JPG)![slevel3-15](C:\Users\pch21\Documents\suninatas_image\slevel3-15.JPG)
 
 
 
@@ -158,7 +158,7 @@ Notice와 Q&A 게시판의 요청을 보면, divi 속성을 이용하여 두 게
 
 궁금해서 `/board/view.asp?page=1&divi=notice`로 한번 봐봤더니 다른 사람들이 했던 것들이 보인닿 ㅎ
 
-![slevel3-16](..\suninatas_image\slevel3-16.JPG)
+![slevel3-16](../suninatas_image/slevel3-16.JPG)
 
 
 
@@ -168,7 +168,7 @@ Notice와 Q&A 게시판의 요청을 보면, divi 속성을 이용하여 두 게
 
 ### #4 level4
 
-![slevel4](..\suninatas_image\slevel4.JPG)
+![slevel4](../suninatas_image/slevel4.JPG)
 
 ```html
 				<tr height="30" class="table_main" >
@@ -184,15 +184,15 @@ Notice와 Q&A 게시판의 요청을 보면, divi 속성을 이용하여 두 게
 
 `Plus`를 눌렀을 때 요청을 살펴보면 다음과 같다.
 
-![slevel4-1](..\suninatas_image\slevel4-1.JPG)
+![slevel4-1](../suninatas_image/slevel4-1.JPG)
 
 2번째와 4번째는 인증서파일과 css파일이므로 무시하고, 1번과 3번을 보면, 먼저 `/Part_one/web04/web04_ck.asp`를 요청하는데, response를 보면 그냥 `/Part_one/web04/web04.asp`로 리다이렉트한다. 이 후 `web04.asp`를 요청하면 response로 기존 html 파일에서 value가 1 증가한 html 파일을 보내준다. 
 
 일단 Plus를 연타하던지 fiddler의 composer를 사용해서 요청을 반복하던지 해서 Point를 마구 증가시켜보면, 다음과 같이 Point가 25이상인 경우에는, SuNiNaTaS browser라는 키워드를 제시하며 Point가 더이상 증가하지 않는다.
 
-![slevel4-3](..\suninatas_image\slevel4-3.JPG)
+![slevel4-3](../suninatas_image/slevel4-3.JPG)
 
-![slevel4-2](..\suninatas_image\slevel4-2.JPG)
+![slevel4-2](../suninatas_image/slevel4-2.JPG)
 
 흠... User-Agent를 보여주는 것으로 보아, request 하면서 전송되는 User-Agent 정보를 SuNiNaTaS로 바꿔서 server로 하여금 client가 SuNiNaTaS browser를 사용하도록 인식시키라는 것 같다. 
 
@@ -202,17 +202,17 @@ Notice와 Q&A 게시판의 요청을 보면, divi 속성을 이용하여 두 게
 
 Fiddler의 Composer는 반복 요청을 할 때 매우 유용하게 쓸 수 있다. web04_ck.asp를 Composer 란에 끌어놓은 뒤, User-Agent 값을 SuNiNaTaS로 변경하고 Execute 한다. 
 
-![slevel4-4](..\suninatas_image\slevel4-4.JPG)
+![slevel4-4](../suninatas_image/slevel4-4.JPG)
 
 이제 정상적으로 Point가 증가하는 것을 볼 수 있다.
 
-![slevel4-5](..\suninatas_image\slevel4-5.JPG)
+![slevel4-5](../suninatas_image/slevel4-5.JPG)
 
 50이 되면 key가 뙇.
 
-![slevel4-6](..\suninatas_image\slevel4-6.JPG)
+![slevel4-6](../suninatas_image/slevel4-6.JPG)
 
-![slevel4-7](..\suninatas_image\slevel4-7.JPG)
+![slevel4-7](../suninatas_image/slevel4-7.JPG)
 
 
 
