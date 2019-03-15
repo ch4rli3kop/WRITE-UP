@@ -66,20 +66,18 @@ Hint를 보아하니 id와 passwd를 같게 한 뒤, document.web02.submit() 동
 
 먼저 브포를 걸어 request 전에 값을 수정할 수 있도록 한다.
 
-![slevel2](..\suninatas_image\slevel2.JPG)
+![slevel2](.\suninatas_image\slevel2.JPG)
 
 브포가 제대로 걸렸으면 대충 아무거나 입력하는데, document.web02.submit()가 실행되야 하므로 반드시 id != pw 한 값으로 입력한다.
 
-![slevel2-1](..\suninatas_image\slevel2-1.JPG)
+![slevel2-1](.\suninatas_image\slevel2-1.JPG)
 
 이후 Join을 클릭하면, document.web02.submit()가 실행되면서 Fiddler에서 브포가 걸린 모습을 확인할 수 있을 것이다. 왼쪽 상단의 Go를 하던가 오른쪽 response란의 Run to Completion을 누르면 끝.
 
-![slevel2-2](..\suninatas_image\slevel2-2.JPG)
-
+![slevel2-2](.\suninatas_image\slevel2-2.JPG)
 
 
 style.css가 없어서 오류가 뜨기는 하는데, 굳이 중요한 것은 아니니 넘겨도 된다.
-
 
 
 [+] 다른 풀이 방법으로 개발자 도구를 사용하는 방법도 있다. 해당 경우 id와 pw를 같은 값으로 입력한 후, console에서 document.web02.submit()을 실행시키면 된다.
