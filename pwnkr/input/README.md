@@ -258,6 +258,7 @@ r.interactive()
 
 
 ```shell
+input2@ubuntu:/tmp/ch4rli3$ ln -s /home/input2/flag flag
 input2@ubuntu:/tmp/ch4rli3$ python sol.py 
 [+] Starting local process '/home/input2/input' argv=['/home/input2/input', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ' \n\r', '66666', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']  env={'\xde\xad\xbe\xef': '\xca\xfe\xba\xbe'} : Done
 [DEBUG] Received 0x92 bytes:
@@ -289,5 +290,5 @@ Mommy! I learned how to pass various input in Linux :)
 
 ```
 
-
+flag에 대해 심볼릭 링크를 걸어준 뒤, 실행하면 완료
 
