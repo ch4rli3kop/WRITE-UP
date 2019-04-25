@@ -16,9 +16,10 @@
 - pythonChallenge
 - bandit
 - LOB
-- suninatas.com
+- suninatas
 - wargame.kr
 - securitytraps.pl
+- w3challs
 
 ### etc
 - boj
