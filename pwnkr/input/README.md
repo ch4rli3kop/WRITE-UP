@@ -2,6 +2,8 @@
 
 
 
+##### [summary] input method
+
 ```shell
 Mom? how can I pass my input to a computer program?
 
